@@ -254,7 +254,7 @@ html {
     flex: 1;
   }
   
-  .edit-button {
+  .change-button {
     border-color: #5b4ff4;
     background-color: white;
     color:#5b4ff4;
@@ -262,6 +262,19 @@ html {
     width: 9%;
     height: 35px;
   }
+
+  .edit-button {
+    border-color: #00bc77;
+    background-color: #00bc77;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px;
+  }
+
+  .display-none {
+    display: none;
+  }
+
 
 
   .header {

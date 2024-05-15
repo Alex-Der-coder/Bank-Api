@@ -6,7 +6,7 @@ console.log(name,SecondName)
 
 const [firstName, setFirstName] = useState(name);
 const [lastName, setLastName] = useState(SecondName);
-
+const [isEditing, setIsEditing] = useState(false);
   // Stocker les valeurs d'origine (placeholders) lorsque vous commencez à modifier les champs
   const [originalFirstName, setOriginalFirstName] = useState(name);
   const [originalLastName, setOriginalLastName] = useState(SecondName);
@@ -17,11 +17,17 @@ const [lastName, setLastName] = useState(SecondName);
     setLastName("");
   };
 
+  const handleEditClick = () => {
+    setIsEditing(!isEditing);
+  };
+
+
 const updateName = async () => {
   try {
     const updatedProfile = {
       firstName: firstName,
       lastName: lastName
+
     };
     console.log(updatedProfile);
     // Call handleUpdateProfile with updated names JSON
@@ -31,6 +37,8 @@ const updateName = async () => {
 
     setOriginalFirstName(firstName);
       setOriginalLastName(lastName);
+      setIsEditing(false);
+      
   } catch (error) {
     console.error("Error updating profile:", error);
 
@@ -40,10 +48,11 @@ const updateName = async () => {
 return (
   <main className="main bg-dark">
     <div className="header">
-      <h1>Welcome back<br />
+      <h1>Welcome back<br/></h1> <h1 className={`${isEditing ? 'display-none' : ''}`}>{firstName} {lastName}!</h1>
+      <button className={`edit-button ${isEditing ? 'display-none' : ''}`} onClick={handleEditClick}>Edit Name</button>
       <div>
       <input
-      className="InputProfil"
+      className={`InputProfil ${isEditing ? '' : 'display-none'}`}
         type="text"
         value={firstName}
         placeholder={originalFirstName}
@@ -52,7 +61,7 @@ return (
         }}
       />
 <input
-className="InputProfil"
+className={`InputProfil ${isEditing ? '' : 'display-none'}`}
         type="text"
         value={lastName}
             placeholder={originalLastName}
@@ -62,10 +71,9 @@ className="InputProfil"
       />
 </div>
       
-      </h1>
      <div>
-        <button className="edit-button" onClick={updateName}>Save</button>
-        <button className="edit-button" onClick={resetForm}>Cancel</button>
+        <button className={`change-button ${isEditing ? '' : 'display-none'}`} onClick={updateName}>Save</button>
+        <button className={`change-button ${isEditing ? '' : 'display-none'}`} onClick={resetForm}>Cancel</button>
      </div>
      
 
