@@ -1,7 +1,7 @@
 
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useDispatch} from 'react-redux';
+import { useDispatch ,useSelector } from 'react-redux';
 import { login } from '../actions/authActions.js';
 
 function Login() {
@@ -9,7 +9,15 @@ function Login() {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
- 
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/profil');
+    }
+  }, [isLoggedIn, navigate]);
+
+
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -23,7 +31,6 @@ function Login() {
     event.preventDefault();
     // Dispatch the login action
     await dispatch(login(username, password));
-    navigate('/profil');
   };
   
     return (

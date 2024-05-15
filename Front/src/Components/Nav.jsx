@@ -1,5 +1,5 @@
 // Nav.js
-import React , { useEffect }  from 'react';
+import React  from 'react';
 import { connect } from 'react-redux';
 import { authLogin, authLogout  } from '../actions/authActions';
 import { loginSucces } from '../actions/authActions';
@@ -8,18 +8,34 @@ import Banklogo from '../img/argentBankLogo.png';
 
 function Nav({ isLoggedIn, ProfilSucces, profileData, authLogout }) {
 
+console.log(profileData);
 
-  const loginOrLogout = isLoggedIn ? (
+let parsedProfileData = null;
+if (profileData) {
+  parsedProfileData = JSON.parse(profileData);
+}
+
+const firstName = parsedProfileData ? parsedProfileData.firstName : null;
+
+const loginOrLogout = isLoggedIn ? (
+  <>
+    {firstName && (
+        <a className="main-nav-item">
+          <i className="fa fa-user-circle"></i>
+          {firstName}
+        </a>
+      )}
     <Link to="/" className="main-nav-item" onClick={authLogout}>
-      <i className="fa fa-user-circle"></i>
-      Logout
+      <i className="fa fa-sign-out"></i>
+      Sign Out
     </Link>
-  ) : (
-    <Link to="/signup" className="main-nav-item" >
-      <i className="fa fa-user-circle"></i>
-      Login
-    </Link>
-  );
+  </>
+) : (
+  <Link to="/signup" className="main-nav-item" >
+    <i className="fa fa-user-circle"></i>
+    Login
+  </Link>
+);
 
 
   return (

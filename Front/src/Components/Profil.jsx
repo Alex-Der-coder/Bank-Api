@@ -1,12 +1,18 @@
-import React from "react";
-import { connect } from 'react-redux';
-
+import React , { useEffect }  from "react";
+import { connect  } from 'react-redux';
 import Nav from './Nav'
 import Footer from './Footer';
 import Account from './Account';
+import { useNavigate } from 'react-router-dom';
 
-function Profil({ isAuthenticated, profileSuccess, profileData }) {
+function Profil({ isLoggedIn ,isAuthenticated, profileSuccess, profileData }) {
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!profileData) {
+      navigate('/signup');
+    }
+  }, [ profileData, navigate]);
 
   // Extraire le prénom et le nom de famille de profileData
   let firstName = "";
