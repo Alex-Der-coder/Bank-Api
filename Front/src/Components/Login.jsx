@@ -9,6 +9,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
 
   useEffect(() => {
@@ -29,8 +30,19 @@ function Login() {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    // Dispatch the login action
-    await dispatch(login(username, password));
+    try {
+      // Dispatch the login action
+      await dispatch(login(username, password));
+      // If login succeeds, you can perform any necessary action here
+    } catch (error) {
+      // Handle login error
+      if (error.message === 'Invalid username or password') {
+        setError("Invalid username or password. Please try again.");
+        console.log(error);
+      } else {
+        setError("An unexpected error occurred. Please try again later.");
+      }
+    }
   };
   
     return (
@@ -62,6 +74,7 @@ function Login() {
             >Remember me</label>
         </div>
          <button className="sign-in-button">Sign In</button>
+         {error && <div className="error">{error}</div>}
       </form>
     </section>
     </main>

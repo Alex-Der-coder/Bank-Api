@@ -6,7 +6,7 @@ import { loginSucces } from '../actions/authActions';
 import { Link } from 'react-router-dom';
 import Banklogo from '../img/argentBankLogo.png';
 
-function Nav({ isLoggedIn, ProfilSucces, profileData, authLogout }) {
+function Nav({ isLoggedIn, ProfilSucces, profileData, authLogout , loginFailure }) {
 
 console.log(profileData);
 
@@ -49,6 +49,7 @@ const loginOrLogout = isLoggedIn ? (
         <h1 className="sr-only">Argent Bank</h1>
       </Link>
       <div>{loginOrLogout}</div>
+      
 
 
     </nav>
@@ -60,6 +61,7 @@ const mapStateToProps = (state) => ({
   isLoggedIn: state.auth.isLoggedIn,
   ProfilSucces: state.profil.ProfilSucces,
   profileData: state.profil.profileData,
+
 });
 
 
@@ -67,6 +69,7 @@ const mapDispatchToProps = {
   authLogin,
   authLogout,
   loginSucces,
+
 
 };
 

@@ -33,7 +33,6 @@ export const loginFailure = (error) => ({
 });
 
 
-
 export const login = (username, password) => async (dispatch) => {
   dispatch(loginRequest());
 
@@ -58,15 +57,20 @@ export const login = (username, password) => async (dispatch) => {
 
       // Appel à fetchProfile après une connexion réussie
       await dispatch(fetchProfile(token));
-      
     } else {
       const errorData = await response.json();
-      dispatch(loginFailure(errorData.message));
+      console.log(errorData.message)
+      alert(errorData.message);
     }
   } catch (error) {
-    dispatch(loginFailure("An error occurred during login"));
+    if (error.response && error.response.status === 400) {
+      dispatch(loginFailure('Invalid username or password'));
+    } else {
+      dispatch(loginFailure('An unexpected error occurred'));
+    }
   }
 };
+
 
 export const fetchProfile = (authToken) => async (dispatch) => {
   const apiUrl = 'http://localhost:3001/api/v1/user/profile';

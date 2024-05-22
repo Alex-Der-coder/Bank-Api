@@ -111,13 +111,13 @@ paths:
         '500':
           description: Internal Server Error
   /transaction:
-    post:
+    patch:
       security:
         - Bearer: []
       tags:
         - Transaction Module
-      summary: Add Transaction
-      description: API to add a new transaction
+      summary: update the category and notes for user
+      description: Update category and note for transaction
       parameters:
         - in: header
           name: Authorization
@@ -138,6 +138,68 @@ paths:
             $ref: '#/definitions/TransactionResponse'
         '400':
           description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /transactions:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transaction Module
+      summary: Get all transactions for a user
+      description: API to fetch all transactions for a specific user
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: query
+          name: userId
+          description: ID of the user
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transactions retrieved successfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Transaction'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /transaction/{transactionId}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transaction Module
+      summary: Get a single transaction
+      description: API to fetch a single transaction by ID
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: path
+          name: transactionId
+          description: ID of the transaction
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transaction retrieved successfully
+          schema:
+            $ref: '#/definitions/Transaction'
+        '400':
+          description: Invalid Fields
+        '404':
+          description: Transaction not found
         '500':
           description: Internal Server Error
 
@@ -199,22 +261,28 @@ definitions:
   Transaction:
     type: object
     properties:
-      type:
+      id:
         type: string
-        description: Type of transaction
+        description: Transaction ID
+      userId:
+        type: string
+        description: ID of the user who made the transaction
+      amount:
+        type: number
+        description: Transaction amount
       category:
         type: string
-        description: Category of the transaction (editable by the user)
+        description: Transaction category
       notes:
         type: string
-        description: Notes for the transaction (editable by the user)
+        description: Notes about the transaction
+      date:
+        type: string
+        format: date-time
+        description: Date and time of the transaction
   TransactionResponse:
     type: object
     properties:
-      id:
-        type: string
-      type:
-        type: string
       category:
         type: string
       notes:
